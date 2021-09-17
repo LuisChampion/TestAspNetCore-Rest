@@ -16,7 +16,7 @@ namespace Entities
         public string Address { get; set; }
 
         [Required]
-        public string Descripcion { get; set; }
+        public string Description { get; set; }
 
         [Required]
         public DateTime Created_At { get; set; }
