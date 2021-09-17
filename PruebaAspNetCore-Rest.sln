@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31515.178
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PruebaAspNetCore-Rest", "PruebaAspNetCore-Rest\PruebaAspNetCore-Rest.csproj", "{EBA06E2E-0D3E-453A-8AFE-A8578C4247FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCore-ApiRest", "PruebaAspNetCore-Rest\NetCore-ApiRest.csproj", "{EBA06E2E-0D3E-453A-8AFE-A8578C4247FC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{35F04B6E-770D-4AB9-B57D-3EF327725F8E}"
 EndProject
