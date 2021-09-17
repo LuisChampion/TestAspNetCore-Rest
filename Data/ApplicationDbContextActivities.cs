@@ -11,6 +11,8 @@ namespace Data
 
         }
 
+        
+
         public DbSet<Property> Property { get; set; }
     }
     
