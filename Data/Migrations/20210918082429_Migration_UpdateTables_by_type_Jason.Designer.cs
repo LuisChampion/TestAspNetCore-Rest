@@ -3,15 +3,17 @@ using System;
 using Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContextActivities))]
-    partial class ApplicationDbContextActivitiesModelSnapshot : ModelSnapshot
+    [Migration("20210918082429_Migration_UpdateTables_by_type_Jason")]
+    partial class Migration_UpdateTables_by_type_Jason
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -105,7 +107,7 @@ namespace Data.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Answers")
-                        .HasColumnType("json");
+                        .HasColumnType("jsonb");
 
                     b.Property<DateTime>("Created_At")
                         .HasColumnType("timestamp without time zone");

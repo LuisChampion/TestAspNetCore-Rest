@@ -3,15 +3,17 @@ using System;
 using Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContextActivities))]
-    partial class ApplicationDbContextActivitiesModelSnapshot : ModelSnapshot
+    [Migration("20210918003205_MigrationAddTables_Activity_Survey")]
+    partial class MigrationAddTables_Activity_Survey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,27 +28,8 @@ namespace Data.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<DateTime>("Created_At")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<int>("Property_Id")
                         .HasColumnType("integer");
-
-                    b.Property<DateTime>("Schedule")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(35)
-                        .HasColumnType("character varying(35)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
-
-                    b.Property<DateTime>("Update_At")
-                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
 
@@ -103,12 +86,6 @@ namespace Data.Migrations
 
                     b.Property<int>("Activity_Id")
                         .HasColumnType("integer");
-
-                    b.Property<string>("Answers")
-                        .HasColumnType("json");
-
-                    b.Property<DateTime>("Created_At")
-                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
 
