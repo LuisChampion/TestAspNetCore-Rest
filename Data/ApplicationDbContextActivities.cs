@@ -9,11 +9,11 @@ namespace Data
         public ApplicationDbContextActivities(DbContextOptions<ApplicationDbContextActivities> options): base(options)
         {
 
-        }
-
-        
+        }        
 
         public DbSet<Property> Property { get; set; }
+        public DbSet<Activity> Activity { get; set; }
+        public DbSet<Survey> Survey { get; set; }
     }
     
 }
