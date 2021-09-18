@@ -5,7 +5,7 @@ using Entities.Interfaces;
 
 namespace Entities
 {
-    public class Property: ICreate_Update_At, IStatus
+    public class Property: ICreateUpdate_At, IStatus
     {
         public Property()
         {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Interfaces
 {
-    public interface ICreate_Update_At: ICreate_At
+    public interface ICreateUpdate_At: ICreate_At
     {        
         DateTime Update_At { get; set; }
     }

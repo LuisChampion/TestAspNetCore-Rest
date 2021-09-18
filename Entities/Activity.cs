@@ -9,7 +9,7 @@ using Entities.Interfaces;
 
 namespace Entities
 {
-    public class Activity: ICreate_Update_At, IStatus
+    public class Activity: ICreateUpdate_At, IStatus
     {
         [Key]
         public int Id { get; set; }
