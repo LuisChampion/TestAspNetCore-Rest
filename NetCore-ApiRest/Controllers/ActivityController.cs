@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Data;
 using Entities;
+using BusinessLogic;
 
 namespace PruebaAspNetCore_Rest.Controllers
 {
@@ -15,17 +16,23 @@ namespace PruebaAspNetCore_Rest.Controllers
     public class ActivityController : ControllerBase
     {
         private readonly ApplicationDbContextActivities _context;
+        private ActivityBusinessLogic _ActivityBusinessLogic;
 
-        public ActivityController(ApplicationDbContextActivities context)
+        //public ActivityController(ApplicationDbContextActivities context)
+        //{
+        //    _context = context;
+        //}
+
+        public ActivityController()
         {
-            _context = context;
+            _ActivityBusinessLogic = new ActivityBusinessLogic();
         }
 
         // GET: api/Activity
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Activity>>> GetActivity()
         {
-            return await _context.Activity.ToListAsync();
+            return await _ActivityBusinessLogic.GetAsync(); 
         }
 
         // GET: api/Activity/5

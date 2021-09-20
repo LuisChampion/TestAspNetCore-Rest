@@ -34,7 +34,7 @@ namespace PruebaAspNetCore_Rest.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Property>>> GetProperty()
         {
-            _PropertyBusinessLogic.Add(new Property());
+            //_PropertyBusinessLogic.Add(new Property());
             return await _PropertyBusinessLogic.GetAsync();// await _context.Property.ToListAsync();
             
         }

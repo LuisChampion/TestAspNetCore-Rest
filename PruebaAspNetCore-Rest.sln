@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entiti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{A39CC230-E4DE-4045-B5C7-F329A10F100C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogic", "BusinessLogic\BusinessLogic.csproj", "{3C46B339-EEB3-4E42-A316-1CA8D12E9AB2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogic", "BusinessLogic\BusinessLogic.csproj", "{3C46B339-EEB3-4E42-A316-1CA8D12E9AB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCore-WebApp", "NetCore-WebApp\NetCore-WebApp.csproj", "{18660BAB-666D-4C16-9C90-A3E464FA6426}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{3C46B339-EEB3-4E42-A316-1CA8D12E9AB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C46B339-EEB3-4E42-A316-1CA8D12E9AB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C46B339-EEB3-4E42-A316-1CA8D12E9AB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18660BAB-666D-4C16-9C90-A3E464FA6426}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18660BAB-666D-4C16-9C90-A3E464FA6426}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18660BAB-666D-4C16-9C90-A3E464FA6426}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18660BAB-666D-4C16-9C90-A3E464FA6426}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
