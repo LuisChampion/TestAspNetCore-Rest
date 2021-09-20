@@ -31,9 +31,14 @@ namespace PruebaAspNetCore_Rest
         {
             //Configuración del contexto
             //services.AddDbContext<ApplicationDbContextActivities>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConneccion")));            
-            
 
+            //services.AddMvc().AddJsonOptions(opt =>
+            //{
+            //    opt.SerializerSettings.ReferenceLoopHandling =
+            //    Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            //});
             services.AddControllers();
+            services.AddAntiforgery();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "LuisChampion PruebaAspNetCore_Rest", Version = "v1" });

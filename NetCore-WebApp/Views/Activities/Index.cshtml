@@ -6,66 +6,79 @@
 }
 
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Property_Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Schedule)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Created_At)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Update_At)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Property_Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Schedule)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Created_At)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Update_At)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="container">
+
+    @if (TempData["mensaje"] != null)
+    {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            @TempData["mensaje"]
+            <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-sm-6">
+            <h3>@ViewData["Title"]</h3>
+        </div>
+        <div class="col-sm-6">
+            
+            <a class="btn btn-success d-block" asp-action="Create" asp-controller="Activities">Agregar nueva actividad</a>
+        </div>
+        <div class="row">
+            @if (Model.Count() > 0)
+            {
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.Id)</th>
+                            <th>@Html.DisplayNameFor(model => model.Property_Id)</th>
+                            <th>@Html.DisplayNameFor(model => model.Schedule)</th>
+                            <th>@Html.DisplayNameFor(model => model.Title)</th>
+                            <th>@Html.DisplayNameFor(model => model.Created_At)</th>
+                            <th>@Html.DisplayNameFor(model => model.Update_At)</th>
+                            <th>@Html.DisplayNameFor(model => model.Status)</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Property_Id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Schedule)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Title)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Created_At)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Update_At)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Status)
+                                </td>
+                                <td>
+                                    <a asp-controller="Activities" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Editar</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>No existen registros</p>
+            }
+        </div>
+    </div>
+</div>

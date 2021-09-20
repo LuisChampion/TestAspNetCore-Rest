@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.Interfaces;
 using Data;
+using Entities.Helper;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -73,7 +74,7 @@ namespace BusinessLogic
             throw new NotImplementedException();
         }
 
-        public virtual ValueTask<TEntidad> AddAsync(TEntidad entidad)
+        public virtual Task<Message<TEntidad>> AddAsync(TEntidad entidad)
         {
             throw new NotImplementedException();
         }

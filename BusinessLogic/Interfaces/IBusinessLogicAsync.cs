@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entities.Helper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace BusinessLogic.Interfaces
 {
     public interface IBusinessLogicAsync<TEntidad> where TEntidad:class
     {
-        ValueTask<TEntidad> AddAsync(TEntidad entidad);
+        Task<Message<TEntidad>> AddAsync(TEntidad entidad);
         Task<int> SaveAsync();
         void UpdateAsync(TEntidad entidad);
         void DeleteAsync(TEntidad entidad);

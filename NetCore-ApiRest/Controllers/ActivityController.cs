@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Data;
 using Entities;
 using BusinessLogic;
+using Entities.Helper;
 
 namespace PruebaAspNetCore_Rest.Controllers
 {
@@ -32,6 +33,7 @@ namespace PruebaAspNetCore_Rest.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Activity>>> GetActivity()
         {
+            
             return await _ActivityBusinessLogic.GetAsync(); 
         }
 
@@ -83,14 +85,19 @@ namespace PruebaAspNetCore_Rest.Controllers
         // POST: api/Activity
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Activity>> PostActivity(Activity activity)
-        {
+        public async Task<ActionResult<Message<Activity>>> PostActivity(Activity activity)
+        {            
+            var newActivity = await _ActivityBusinessLogic.AddAsync(activity);
+            if (newActivity == null)
+            {
+                return NotFound();
+            }
+            //_context.Activity.Add(activity);
+            //await _context.SaveChangesAsync();
+            //return newActivity; // CreatedAtAction("GetActivity", new { id = newActivity.Id }, newActivity);
 
-
-            _context.Activity.Add(activity);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetActivity", new { id = activity.Id }, activity);
+            return newActivity;
+            //return NoContent();
         }
 
         // DELETE: api/Activity/5
@@ -113,5 +120,13 @@ namespace PruebaAspNetCore_Rest.Controllers
         {
             return _context.Activity.Any(e => e.Id == id);
         }
+
+        [HttpPost("{id}")]
+        public async Task<ActionResult<Message<Activity>>> CancelaActivity(int idActivity)
+        {
+            var modififyActivity = await _ActivityBusinessLogic.CancelaAsync(idActivity);
+            return modififyActivity;
+        }
+
     }
 }

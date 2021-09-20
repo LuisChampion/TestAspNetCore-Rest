@@ -9,7 +9,7 @@ namespace Data
     {
         public ApplicationDbContextActivities(DbContextOptions<ApplicationDbContextActivities> options): base(options)
         {
-
+            
         }        
 
         public DbSet<Property> Property { get; set; }
@@ -18,6 +18,8 @@ namespace Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            
+
             if (!optionsBuilder.IsConfigured)
             {
                 IConfigurationRoot configuration = new ConfigurationBuilder()

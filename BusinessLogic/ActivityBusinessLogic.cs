@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Entities;
+using Entities.Helper;
 
 namespace BusinessLogic
 {
@@ -11,34 +12,51 @@ namespace BusinessLogic
     {
 
         #region Public
-        public override async ValueTask<Activity> AddAsync(Activity entidad)
+        public override async Task<Message<Activity>> AddAsync(Activity entidad)
         {
             //Rules:           
+            Message<Activity> respuesta = new Message<Activity>();
+            respuesta.IsSuccess = true;
+
             string mensajeFecha = string.Empty;
             if (entidad != null)
             {
+                respuesta.Data = entidad;
+                
                 //No se pueden crear actividades si una Propiedad está desactivada           
                 Property propiedad = _Context.Property.Find(entidad.Property_Id);
                 if (propiedad == null)
                 {
-                    throw new Exception($"No se ha asignado una propiedad válida.");
+                    //throw new Exception($"No se ha asignado una propiedad válida.");
+                    respuesta.ReturnMessage = "No se ha asignado una propiedad válida";
+                    respuesta.IsSuccess = false;
+                    return respuesta;
                 }
 
                 if (propiedad.Disabled_At.HasValue == true)
                 {
-                    throw new Exception($"No se pueden crear actividades si una Propiedad está desactivada");
+                    respuesta.ReturnMessage = $"No se pueden crear actividades si una Propiedad está desactivada";
+                    respuesta.IsSuccess = false;
+                    return respuesta;
                 }
 
                 if (EsFechaValida(entidad, out mensajeFecha) == false)
                 {
-                    throw new Exception(mensajeFecha);
+                    respuesta.ReturnMessage = mensajeFecha;
+                    respuesta.IsSuccess = false;
+                    return respuesta;
                     //TODO: Validar el comportamiento de intervalos de 1 hora por actividad. Posible ajuste de la tabla Activity para agregar campos Schedule_Start, Schedule_End
                 }
 
-                await _Context.AddAsync(entidad);
-                await this.SaveAsync();
+                if (respuesta.IsSuccess)
+                {
+                    entidad.Update_At = DateTime.Now;
+                    _Context.Add(entidad);
+                    await this.SaveAsync();
+                }
+               
             }
-            return entidad;
+            return respuesta;
         }
 
         public async Task<int> ReagendarAsync(int idActividad, DateTime fecha)
@@ -58,23 +76,32 @@ namespace BusinessLogic
                     mensajeValidacion = "No se pueden re-agendar actividades canceladas";
                     throw new Exception($"{mensajeValidacion}");
                 }
+                activity.Update_At = DateTime.Now;
                 return await this.SaveAsync();
             }
             return await Task.FromResult(0);
         }
 
-        public Task<bool> CancelaAsync(int idActividad)
+        public async Task<Message<Activity>> CancelaAsync(int idActividad)
         {
-            bool resultado = false;
+            Message<Activity> respuesta = new Message<Activity>();
             Activity activity = this._Context.Activity.Find(idActividad);
-            
+
+            if (activity == null)
+            {
+                respuesta.ReturnMessage = "No se pudo recuperar la información de la actividad";
+            }
+
             if (activity != null)
             {
+                activity.Status = "CANCELADA";
+                activity.Update_At = DateTime.Now;
                 this.Update(activity);
-                this.Save();
-                resultado = true;
+                await this.SaveAsync();
+                respuesta.IsSuccess = true;
+                respuesta.ReturnMessage = "Se ha cambiado el estatus de la actividad";
             }
-            return Task.FromResult(resultado);
+            return respuesta;
         }
 
         
@@ -101,6 +128,7 @@ namespace BusinessLogic
 
             if (propiedad != null)
             {
+                propiedad.Activities = _Context.Activity.Where(x => x.Property_Id == propiedad.Id).ToList();
                 //No se pueden crear actividades en la misma fecha y hora(para la misma propiedad), tomando en cuenta que cada actividad debe durar máximo una hora.
                 List<Activity> actividadesConMismaFechaHora = propiedad.Activities.Where(x => x.Schedule == activity.Schedule).ToList();
                 if (actividadesConMismaFechaHora != null && actividadesConMismaFechaHora.Count == 0)

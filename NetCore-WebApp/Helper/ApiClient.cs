@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Text;
+using System.Net.Http.Json;
+using System.Web.Mvc;
+using Entities.Helper;
 
 namespace NetCore_WebApp.Helper
 {
@@ -19,8 +23,13 @@ namespace NetCore_WebApp.Helper
                 throw new ArgumentNullException(nameof(baseEndPoint));
             }
             BaseEndPoint = baseEndPoint;
+            
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = baseEndPoint;
+            _httpClient.DefaultRequestHeaders.ExpectContinue = false;
+            _httpClient.DefaultRequestHeaders.Accept.Clear();
+            _httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+            
         }
 
         //Método para generar las llamadas GET
@@ -33,6 +42,23 @@ namespace NetCore_WebApp.Helper
             return JsonConvert.DeserializeObject<T>(data);
         }
 
+        //Método para generar las llamadas POST
+        private async Task<Message<T>> PostAsync<T>(Uri requestUrl, T content)
+        {
+
+            //addHeaders();
+            var response = await _httpClient.PostAsync(requestUrl, CreateHttpContent<T>(content));
+            bool estatus = response.IsSuccessStatusCode;
+            Message<T> newT = default;
+            if (estatus == true)
+            {
+                response.EnsureSuccessStatusCode();
+                var data = await response.Content.ReadAsStringAsync();
+                newT = JsonConvert.DeserializeObject<Message<T>>(data);
+            }
+            return newT;
+        }
+
         public async Task<T> GetAsync<T>(string apiPath = "")
         {
             var requestUrl = CreateRequestUri(
@@ -41,6 +67,17 @@ namespace NetCore_WebApp.Helper
             return await GetAsync<T>(requestUrl);
            
         }
+
+        public async Task<Message<T>> PostAsync<T>(string apiPath, T content)
+        {
+            var requestUrl = CreateRequestUri(
+                                                string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                                                apiPath));
+            return await PostAsync<T>(requestUrl,content);
+
+        }
+
+
 
         protected Uri CreateRequestUri(string relativeUri, string queryString = "")
         {
@@ -52,6 +89,12 @@ namespace NetCore_WebApp.Helper
         }
 
         protected HttpContent CreateHttpContent<T>(T content)
+        {
+            var json = JsonConvert.SerializeObject(content, MicrosoftDateFormatSettings);
+            return new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+        }
+
+        protected StringContent CreateStringContent<T>(T content)
         {
             var json = JsonConvert.SerializeObject(content, MicrosoftDateFormatSettings);
             return new StringContent(json, System.Text.Encoding.UTF8, "application/json");
@@ -69,7 +112,9 @@ namespace NetCore_WebApp.Helper
             {
                 return new JsonSerializerSettings
                 {
-                    DateFormatHandling = DateFormatHandling.MicrosoftDateFormat
+                    DateFormatHandling = DateFormatHandling.IsoDateFormat,
+                    PreserveReferencesHandling= PreserveReferencesHandling.Objects,
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 };
             }
         }
