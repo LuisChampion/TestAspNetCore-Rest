@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Data;
 using Entities;
+using BusinessLogic;
 
 namespace PruebaAspNetCore_Rest.Controllers
 {
@@ -15,17 +16,27 @@ namespace PruebaAspNetCore_Rest.Controllers
     public class PropertyController : ControllerBase
     {
         private readonly ApplicationDbContextActivities _context;
+        private PropertyBusinessLogic _PropertyBusinessLogic;
 
-        public PropertyController(ApplicationDbContextActivities context)
+
+        //public PropertyController(ApplicationDbContextActivities context)
+        //{
+        //    _context = context;
+
+        //}
+
+        public PropertyController()
         {
-            _context = context;
+            _PropertyBusinessLogic = new PropertyBusinessLogic();
         }
 
         // GET: api/Property
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Property>>> GetProperty()
         {
-            return await _context.Property.ToListAsync();
+            _PropertyBusinessLogic.Add(new Property());
+            return await _PropertyBusinessLogic.GetAsync();// await _context.Property.ToListAsync();
+            
         }
 
         // GET: api/Property/5

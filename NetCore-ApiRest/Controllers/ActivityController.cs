@@ -78,6 +78,8 @@ namespace PruebaAspNetCore_Rest.Controllers
         [HttpPost]
         public async Task<ActionResult<Activity>> PostActivity(Activity activity)
         {
+
+
             _context.Activity.Add(activity);
             await _context.SaveChangesAsync();
 

@@ -30,13 +30,13 @@ namespace PruebaAspNetCore_Rest
         public void ConfigureServices(IServiceCollection services)
         {
             //Configuración del contexto
-            services.AddDbContext<ApplicationDbContextActivities>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConneccion")));            
+            //services.AddDbContext<ApplicationDbContextActivities>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConneccion")));            
             
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "PruebaAspNetCore_Rest", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "LuisChampion PruebaAspNetCore_Rest", Version = "v1" });
             });
         }
 
