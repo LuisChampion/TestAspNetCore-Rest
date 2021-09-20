@@ -82,7 +82,7 @@ namespace BusinessLogic
             return await Task.FromResult(0);
         }
 
-        public async Task<Message<Activity>> CancelaAsync(int idActividad)
+        public async Task<Message<Activity>> CancelAsync(int idActividad)
         {
             Message<Activity> respuesta = new Message<Activity>();
             Activity activity = this._Context.Activity.Find(idActividad);
@@ -100,6 +100,7 @@ namespace BusinessLogic
                 await this.SaveAsync();
                 respuesta.IsSuccess = true;
                 respuesta.ReturnMessage = "Se ha cambiado el estatus de la actividad";
+                respuesta.Data = activity;
             }
             return respuesta;
         }

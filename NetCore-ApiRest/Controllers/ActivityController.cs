@@ -121,10 +121,10 @@ namespace PruebaAspNetCore_Rest.Controllers
             return _context.Activity.Any(e => e.Id == id);
         }
 
-        [HttpPost("{id}")]
-        public async Task<ActionResult<Message<Activity>>> CancelaActivity(int idActivity)
+        [HttpPut("Cancel/{id}")]
+        public async Task<ActionResult<Message<Activity>>> CancelActivity(int id)
         {
-            var modififyActivity = await _ActivityBusinessLogic.CancelaAsync(idActivity);
+            var modififyActivity = await _ActivityBusinessLogic.CancelAsync(id);
             return modififyActivity;
         }
 

@@ -18,8 +18,8 @@ namespace NetCore_WebApp.Controllers
         public async Task<IActionResult> Index()
         {
             string apiPath = "api/Activity";
-            var listActivities = await Factory.ApiClientFactory.Instance.GetAsync<List<Entities.Activity>>(apiPath);
-            return View(listActivities);
+            var listActivities = await Factory.ApiClientFactory.Instance.GetAsync<List<Entities.Activity>>(apiPath);            
+            return View(listActivities?.OrderBy(o=> o.Schedule)?.ToList());
         }
 
         public IActionResult Create()
@@ -69,6 +69,27 @@ namespace NetCore_WebApp.Controllers
             }
             return View();
         }
-        
+
+        [Route("[controller]/[action]")]
+        [HttpPost("{id}"), ActionName("Cancel")]
+        public async Task<IActionResult> Cancel(int id)
+        {
+            string apiPath = $"api/Activity/Cancel/{id}";
+            if (ModelState.IsValid)
+            {
+                var resultado = await Factory.ApiClientFactory.Instance.PutAsync<Activity>(apiPath, null);
+                if (resultado != null)
+                {
+                    TempData["mensaje"] = resultado.ReturnMessage;
+                }
+                else
+                {
+                    TempData["mensaje"] = "Ocurrió un error inesperado";
+                }
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
+
     }
 }

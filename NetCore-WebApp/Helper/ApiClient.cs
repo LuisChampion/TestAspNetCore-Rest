@@ -25,6 +25,7 @@ namespace NetCore_WebApp.Helper
             BaseEndPoint = baseEndPoint;
             
             _httpClient = new HttpClient();
+            
             _httpClient.BaseAddress = baseEndPoint;
             _httpClient.DefaultRequestHeaders.ExpectContinue = false;
             _httpClient.DefaultRequestHeaders.Accept.Clear();
@@ -59,6 +60,23 @@ namespace NetCore_WebApp.Helper
             return newT;
         }
 
+        //Método para generar las llamadas PUT
+        private async Task<Message<T>> PutAsync<T>(Uri requestUrl, T content)
+        {
+
+            //addHeaders();
+            var response = await _httpClient.PutAsync(requestUrl, CreateHttpContent<T>(content));
+            bool estatus = response.IsSuccessStatusCode;
+            Message<T> newT = default;
+            if (estatus == true)
+            {
+                response.EnsureSuccessStatusCode();
+                var data = await response.Content.ReadAsStringAsync();
+                newT = JsonConvert.DeserializeObject<Message<T>>(data);
+            }
+            return newT;
+        }
+
         public async Task<T> GetAsync<T>(string apiPath = "")
         {
             var requestUrl = CreateRequestUri(
@@ -73,7 +91,16 @@ namespace NetCore_WebApp.Helper
             var requestUrl = CreateRequestUri(
                                                 string.Format(System.Globalization.CultureInfo.InvariantCulture,
                                                 apiPath));
-            return await PostAsync<T>(requestUrl,content);
+            return await PostAsync(requestUrl,content);
+
+        }
+
+        public async Task<Message<T>> PutAsync<T>(string apiPath, T content)
+        {
+            var requestUrl = CreateRequestUri(
+                                                string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                                                apiPath));
+            return await PutAsync(requestUrl, content);
 
         }
 
