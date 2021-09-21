@@ -37,7 +37,7 @@
                             <th>@Html.DisplayNameFor(model => model.Schedule)</th>
                             <th>@Html.DisplayNameFor(model => model.Title)</th>
                             <th>@Html.DisplayNameFor(model => model.Created_At)</th>
-                            <th>@Html.DisplayNameFor(model => model.Update_At)</th>
+                            @*<th>@Html.DisplayNameFor(model => model.Update_At)</th>*@
                             <th>@Html.DisplayNameFor(model => model.Status)</th>
                             <th></th>
                         </tr>
@@ -61,15 +61,16 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Created_At)
                                 </td>
-                                <td>
+                                @*<td>
                                     @Html.DisplayFor(modelItem => item.Update_At)
-                                </td>
+                                </td>*@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Status)
                                 </td>
                                 <td>
-                                    <a asp-controller="Activities" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Editar</a>
-                                    <a asp-controller="Activities"  asp-action="Cancel" asp-route-id="@item.Id" class="btn btn-outline-secondary">Cancela</a>
+                                    @*<a asp-controller="Activities" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Editar</a>*@
+                                    <a asp-controller="Activities" asp-action="Cancel" asp-route-id="@item.Id" class="btn btn-danger">Cancela</a>
+                                    <a asp-controller="Activities" asp-action="EditReagenda" asp-route-id="@item.Id" class="btn btn-warning">Reagendar</a>
                                 </td>
                             </tr>
                         }

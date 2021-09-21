@@ -59,27 +59,33 @@ namespace BusinessLogic
             return respuesta;
         }
 
-        public async Task<int> ReagendarAsync(int idActividad, DateTime fecha)
+        public async Task<Message<Activity>> ReagendarAsync(Activity activity)
         {
             string mensajeValidacion = string.Empty;
-
-            Activity activity = this._Context.Activity.Find(idActividad);
+            Message<Activity> resultado = new Message<Activity>();
+            
             if (activity != null)
             {
                 if (EsFechaValida(activity, out mensajeValidacion) == false)
                 {
-                    throw new Exception($"{mensajeValidacion}");
+                    
+                    resultado.ReturnMessage = mensajeValidacion;
+                    return resultado;
                 }
 
                 if (string.Compare(activity.Status, "CANCELADA") == 0)
                 {
-                    mensajeValidacion = "No se pueden re-agendar actividades canceladas";
-                    throw new Exception($"{mensajeValidacion}");
+                    resultado.ReturnMessage = "No se pueden re-agendar actividades canceladas";
+                    return resultado;
                 }
+
                 activity.Update_At = DateTime.Now;
-                return await this.SaveAsync();
+                await this.SaveAsync();
+                resultado.IsSuccess = true;
+                resultado.Data = activity;
+                resultado.ReturnMessage = "Se ha re-agendado la actividad";
             }
-            return await Task.FromResult(0);
+            return resultado;
         }
 
         public async Task<Message<Activity>> CancelAsync(int idActividad)

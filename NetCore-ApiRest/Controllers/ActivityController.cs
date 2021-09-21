@@ -41,13 +41,11 @@ namespace PruebaAspNetCore_Rest.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Activity>> GetActivity(int id)
         {
-            var activity = await _context.Activity.FindAsync(id);
-
+            var activity = await _ActivityBusinessLogic.GetAsync(id);
             if (activity == null)
             {
                 return NotFound();
             }
-
             return activity;
         }
 
@@ -125,6 +123,13 @@ namespace PruebaAspNetCore_Rest.Controllers
         public async Task<ActionResult<Message<Activity>>> CancelActivity(int id)
         {
             var modififyActivity = await _ActivityBusinessLogic.CancelAsync(id);
+            return modififyActivity;
+        }
+
+        [HttpPost("Reagenda")]
+        public async Task<ActionResult<Message<Activity>>> ReagendaActivity(Activity activity)
+        {
+            var modififyActivity = await _ActivityBusinessLogic.ReagendarAsync(activity);
             return modififyActivity;
         }
 

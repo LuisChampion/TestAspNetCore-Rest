@@ -66,7 +66,7 @@ namespace BusinessLogic
 
         public virtual Task<TEntidad> GetAsync(int id)
         {
-            throw new NotImplementedException();
+          return this.Entity.FindAsync(id).AsTask();
         }
 
         public virtual TEntidad Add(TEntidad entidad)

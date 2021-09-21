@@ -70,7 +70,7 @@ namespace NetCore_WebApp.Controllers
             return View();
         }
 
-        [Route("[controller]/[action]")]
+        
         [HttpPost("{id}"), ActionName("Cancel")]
         public async Task<IActionResult> Cancel(int id)
         {
@@ -89,6 +89,60 @@ namespace NetCore_WebApp.Controllers
                 return RedirectToAction("Index");
             }
             return View();
+        }
+
+
+        
+        public async Task<IActionResult> EditReagenda(int id)
+        {
+           
+            string apiPath = $"api/Activity/{id}";
+            if ( id == 0)
+            {
+                return NotFound();
+            }
+
+            var listProperties = Factory.ApiClientFactory.Instance.GetAsync<List<Entities.Property>>("api/Property").Result;
+            if (listProperties != null)
+            {
+                var selectedListItem = listProperties.ConvertAll(d =>
+                {
+                    return new SelectListItem()
+                    {
+                        Text = d.Title,
+                        Value = d.Id.ToString(),
+                        Selected = false
+                    };
+                });
+                ViewBag.PropertyItems = selectedListItem;
+            }
+
+            var actividad = await Factory.ApiClientFactory.Instance.GetAsync<Activity>(apiPath);
+            if (actividad== null)
+            {
+                return NotFound();
+            }
+
+            return View(actividad);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Reagenda(Activity activity)
+        {
+            //var actividad = await Factory.ApiClientFactory.Instance.GetAsync<Activity>($"api/Activity/{activity.Id}");
+            //actividad.Schedule = activity.Schedule;
+            var resultado = await Factory.ApiClientFactory.Instance.PostAsync("api/Activity/Reagenda", activity);
+                if (resultado != null)
+                {
+                    TempData["mensaje"] = resultado.ReturnMessage;
+                }
+                else
+                {
+                    TempData["mensaje"] = "Ocurrió un error inesperado";
+                    
+                }
+            return RedirectToAction("Index");
         }
 
     }
